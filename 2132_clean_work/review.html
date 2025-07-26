@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Map</title>
+    <style>
+        :root {
+            --primary-color: #7cb8eb;
+            --secondary-color: #4f83d1;
+            --section-bg-color: #f0f8ff;
+            --custom-btn-bg-color: #4f83d1;
+            --custom-btn-bg-hover-color: #7cb8eb;
+            --dark-color: #000000;
+            --p-color: #717275;
+            --border-color: #e9eaeb;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--section-bg-color);
+            color: var(--dark-color);
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: var(--primary-color);
+            padding: 10px;
+            text-align: center;
+        }
+        nav h1 {
+            color: #fff;
+            margin: 0;
+        }
+        main {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .map-container {
+            width: 70%;
+            height: 600px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+        .crime-data-container {
+            width: 25%;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+        .crime-data-container h2 {
+            margin-top: 0;
+        }
+        .crime-data-container #crime-stats {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>Crime Map</h1>
+    </nav>
+    <main>
+        <div id="map" class="map-container"></div>
+        <div id="crime-data" class="crime-data-container">
+            <h2>Crime Data</h2>
+            <div id="crime-stats"></div>
+        </div>
+    </main>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script>
+        async function initMap() {
+            try {
+                const response = await fetch('http://127.0.0.1:8081/api/get-api-key');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const { apiKey } = await response.json();
+
+                const platform = new H.service.Platform({ apikey: apiKey });
+                const defaultLayers = platform.createDefaultLayers();
+                const map = new H.Map(
+                    document.getElementById('map'),
+                    defaultLayers.vector.normal.map,
+                    {
+                        center: { lat: 40.73061, lng: -73.935242 },
+                        zoom: 12,
+                        pixelRatio: window.devicePixelRatio || 1
+                    }
+                );
+
+                window.addEventListener('resize', () => map.getViewPort().resize());
+
+                const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+                const ui = H.ui.UI.createDefault(map, defaultLayers);
+
+                fetchCrimeData(map);
+            } catch (error) {
+                console.error('Error initializing map:', error);
+            }
+        }
+
+        async function fetchCrimeData(map) {
+            try {
+                const response = await fetch('http://127.0.0.1:8081/api/crime-data');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayCrimeData(data);
+                plotCrimeDataOnMap(data, map);
+            } catch (error) {
+                console.error('Error fetching crime data:', error);
+            }
+        }
+
+        function displayCrimeData(data) {
+            const crimeStats = document.getElementById('crime-stats');
+            crimeStats.innerHTML = data.map(crime => `<p>${crime.type}: ${crime.count}</p>`).join('');
+        }
+
+        function plotCrimeDataOnMap(data, map) {
+            data.forEach(crime => {
+                const marker = new H.map.Marker({ lat: crime.latitude, lng: crime.longitude });
+                map.addObject(marker);
+            });
+        }
+
+        window.onload = initMap;
+    </script>
+</body>
+</html>

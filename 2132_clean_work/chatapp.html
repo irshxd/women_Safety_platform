@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Secure Space - One-on-One Chat</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-icons.css" rel="stylesheet" />
+    <link href="css/magnific-popup.css" rel="stylesheet" />
+    <link href="css/tooplate-clean-work.css" rel="stylesheet" />
+
+    <style>
+      :root {
+        --background-color: #ffffff;
+        --primary-color: #7cb8eb;
+        --secondary-color: #4f83d1;
+        --section-bg-color: #f0f8ff;
+        --custom-btn-bg-color: #4f83d1;
+        --custom-btn-bg-hover-color: #7cb8eb;
+        --dark-color: #000000;
+        --p-color: #717275;
+        --border-color: #e9eaeb;
+        --link-hover-color: #4f83d1;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: var(--section-bg-color);
+        color: var(--p-color);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        /* align-items: center; */
+        /* justify-content: center; */
+        height: 90vh;
+      }
+
+      .chat-container {
+        background-color: var(--background-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        width: 90%;
+        max-width: 800px;
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        margin-left: 50svh;
+        margin-top: 5svh;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        @media (max-width: 768px) {
+          margin-left: 3svh; /* No margin for mobile devices */
+        }
+      }
+
+      .chat-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px;
+        text-align: center;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+      h2 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 4svh;
+        color: #ffffff;
+      }
+
+      .chat-messages {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+      }
+
+      .chat-input {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .chat-input input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        margin-right: 10px;
+      }
+
+      .chat-input button {
+        padding: 20px 20px;
+        background-color: var(--custom-btn-bg-color);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .chat-input button:hover {
+        background-color: var(--custom-btn-bg-hover-color);
+      }
+
+      .message {
+        display: flex;
+        margin-bottom: 10px;
+      }
+
+      .message.user {
+        justify-content: flex-end;
+      }
+
+      .message.other {
+        justify-content: flex-start;
+      }
+
+      .message-content {
+        max-width: 60%;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+      }
+
+      .message.user .message-content {
+        background-color: var(--primary-color);
+        color: white;
+        border-top-right-radius: 0;
+      }
+
+      .message.other .message-content {
+        background-color: var(--background-color);
+        border-top-left-radius: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-12 d-flex flex-wrap">
+            <p class="d-flex me-4 mb-0">
+              <i class="bi-house-fill me-2"></i>
+              Secure Space Helpline
+            </p>
+
+            <p class="d-flex d-lg-block d-md-block d-none me-4 mb-0">
+              <i class="bi-clock-fill me-2"></i>
+              <strong class="me-2">Mon - Fri</strong> 8:00 AM - 5:30 AM
+            </p>
+
+            <p class="site-header-icon-wrap text-white d-flex mb-0 ms-auto">
+              <i class="site-header-icon bi-whatsapp me-2"></i>
+              <a href="tel: 110-220-9800" class="text-white"> 9908348672 </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="images/bubbles.png" class="logo img-fluid" alt="" />
+          <span class="ms-2">Secure Space</span>
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About Us</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#section_5"
+                id="navbarLightDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                >Pages</a
+              >
+              <ul
+                class="dropdown-menu dropdown-menu-light"
+                aria-labelledby="navbarLightDropdownMenuLink"
+              >
+                <li>
+                  <a class="dropdown-item" href="index.html">Our Services</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="coming-soon.html"
+                    >Coming Soon</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="page-404.html">Page 404</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+            <li class="nav-item ms-3">
+              <a
+                class="nav-link custom-btn custom-border-btn custom-btn-bg-white btn"
+                href="#"
+                >Get started</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav> -->
+
+    <!-- <section
+      class="banner-section d-flex justify-content-center align-items-end"
+    >
+      <div class="section-overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-7 col-12">
+            <h1 class="text-white mb-lg-0">Emergency SOS</h1>
+          </div>
+          <div
+            class="col-lg-4 col-12 d-flex justify-content-lg-end align-items-center ms-auto"
+          >
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb justify-content-center">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Emergency SOS
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <div class="chat-container">
+      <div class="chat-header">
+        <h2>Satellite based communication</h2>
+      </div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input">
+        <input
+          type="text"
+          id="message-input"
+          placeholder="Type your message..."
+        />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <script>
+      const ws = new WebSocket("ws://192.168.100.4:8083"); // Replace 'localhost' with your local IP
+
+      ws.onopen = () => {
+        console.log("Connected to the server");
+      };
+
+      ws.onmessage = (event) => {
+        // Handle binary data (Blob)
+        if (event.data instanceof Blob) {
+          const reader = new FileReader();
+          reader.onload = function () {
+            displayMessage(reader.result, "other");
+          };
+          reader.readAsText(event.data);
+        } else {
+          displayMessage(event.data, "other");
+        }
+      };
+
+      ws.onclose = () => {
+        console.log("Disconnected from the server");
+      };
+
+      function sendMessage() {
+        const input = document.getElementById("message-input");
+        const message = input.value;
+        ws.send(message);
+        displayMessage(message, "user");
+        input.value = "";
+      }
+
+      function displayMessage(message, type) {
+        const messagesContainer = document.getElementById("chat-messages");
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", type);
+
+        const messageContent = document.createElement("div");
+        messageContent.classList.add("message-content");
+        messageContent.textContent = message;
+
+        messageDiv.appendChild(messageContent);
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    </script>
+  </body>
+</html>
